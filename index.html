@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京东双11全球好物节</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#e1251b', // 京东红
+                        secondary: '#f5f5f5',
+                        dark: '#333333',
+                        light: '#ffffff',
+                        'primary-light': '#f8e3e1',
+                    },
+                    fontFamily: {
+                        sans: ['PingFang SC', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .prize-item {
+        position: absolute;
+        width: 80px;
+        height: 40px;
+        transform-origin: bottom center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .red-packet {
+        position: absolute;
+        animation: fall linear forwards;
+        z-index: 100;
+        cursor: pointer;
+      }
+      @keyframes fall {
+        0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      }
+      @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .rotate-animation {
+        animation: rotate 8s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards;
+      }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-dark">
+    <!-- 顶部导航栏 -->
+    <header class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- 左侧Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="text-primary text-2xl font-bold flex items-center">
+                        <i class="fa fa-shopping-bag mr-2"></i>
+                        <span>京东</span>
+                    </a>
+                    <span class="ml-3 text-primary text-sm font-bold bg-primary-light px-2 py-1 rounded">双11全球好物节</span>
+                </div>
+
+                <!-- 中间搜索框 -->
+                <div class="hidden md:flex items-center flex-1 max-w-xl mx-8">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="搜索双11好物..."
+                            class="w-full py-2 px-4 pr-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+                        <button
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 右侧导航 -->
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="hidden md:block hover:text-primary transition-colors">
+                        <i class="fa fa-user-o mr-1"></i>我的京东
+                    </a>
+                    <a href="#" class="hidden md:block hover:text-primary transition-colors">
+                        <i class="fa fa-clock-o mr-1"></i>历史
+                    </a>
+                    <a href="#" class="hover:text-primary transition-colors relative" id="couponBtn">
+                        <i class="fa fa-ticket mr-1"></i>优惠券
+                        <span
+                            class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 双11倒计时横幅 -->
+    <div class="bg-primary text-white py-3">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg md:text-xl font-bold">京东11.11全球热爱季</p>
+            <p class="mt-1 flex items-center justify-center">
+                <span>距离活动结束还有：</span>
+            <div class="flex ml-2 space-x-2">
+                <div class="bg-black/30 px-2 py-1 rounded">
+                    <span id="hours" class="font-mono">23</span>
+                </div>
+                <span>:</span>
+                <div class="bg-black/30 px-2 py-1 rounded">
+                    <span id="minutes" class="font-mono">59</span>
+                </div>
+                <span>:</span>
+                <div class="bg-black/30 px-2 py-1 rounded">
+                    <span id="seconds" class="font-mono">59</span>
+                </div>
+            </div>
+            <span class="ml-4" id="redPacketRainTimer">下一场红包雨：5:00</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 主横幅广告 -->
+    <div class="relative overflow-hidden">
+        <img src="https://picsum.photos/1200/300?random=1" alt="双11大促" class="w-full h-auto object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/60 to-transparent flex items-center">
+            <div class="container mx-auto px-4">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white text-shadow mb-3">
+                    年度最大力度优惠
+                </h2>
+                <p class="text-white text-shadow max-w-md mb-6">
+                    全场商品低至5折，跨店满减叠加优惠券，还有更多惊喜等你来
+                </p>
+                <button
+                    class="bg-white text-primary px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors shadow-lg">
+                    立即抢购
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要商品展示区 -->
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold mb-6">精选好物</h2>
+
+        <!-- 商品网格 -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <!-- 商品将通过JS动态生成 -->
+        </div>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer class="bg-dark text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">关于京东</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">公司介绍</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">联系我们</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">加入我们</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">客户服务</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">帮助中心</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">售后服务</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">配送方式</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">关注我们</h3>
+                    <div class="flex space-x-4 text-xl">
+                        <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-weibo"></i></a>
+                        <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-wechat"></i></a>
+                        <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2023 京东JD.com 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 右下角功能按钮区 -->
+    <div class="fixed right-4 bottom-20 flex flex-col items-center space-y-3 z-40">
+        <button id="loginBtn"
+            class="bg-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300">
+            <i class="fa fa-user"></i>
+        </button>
+        <button id="farmBtn"
+            class="bg-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-600 hover:text-white transition-all duration-300">
+            <i class="fa fa-leaf"></i>
+        </button>
+        <button id="wishlistBtn"
+            class="bg-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-all duration-300">
+            <i class="fa fa-heart"></i>
+        </button>
+        <button id="cartBtn"
+            class="bg-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 relative">
+            <i class="fa fa-shopping-cart"></i>
+            <span id="cartCount"
+                class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </button>
+    </div>
+
+    <!-- 左下角可移动客服按钮 -->
+    <div id="customerService"
+        class="fixed left-4 bottom-20 bg-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-primary cursor-move z-40 hover:bg-primary hover:text-white transition-all duration-300">
+        <i class="fa fa-comments"></i>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div id="loginModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">用户登录</h3>
+                <button class="closeModal text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">手机号码</label>
+                    <input type="tel"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                        placeholder="请输入手机号码" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                    <input type="password"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                        placeholder="请输入密码" required>
+                </div>
+                <button type="submit"
+                    class="w-full bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/90 transition-colors">登录</button>
+                <div class="mt-4 text-center text-sm">
+                    <a href="#" class="text-primary hover:underline">忘记密码?</a>
+                    <span class="mx-2 text-gray-400">|</span>
+                    <a href="#" class="text-primary hover:underline">注册账号</a>
+                </div>
+                <div class="mt-6">
+                    <p class="text-center text-sm text-gray-500 mb-3">其他登录方式</p>
+                    <div class="flex justify-center space-x-6">
+                        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fa fa-qq text-xl"></i></a>
+                        <a href="#" class="text-green-500 hover:text-green-700"><i class="fa fa-weixin text-xl"></i></a>
+                        <a href="#" class="text-red-500 hover:text-red-700"><i class="fa fa-weibo text-xl"></i></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 优惠券模态框 -->
+    <div id="couponModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-bold">我的优惠券</h3>
+                <button class="closeModal text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="overflow-y-auto p-6 flex-1">
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3">可用优惠券</h4>
+                    <div class="space-y-4">
+                        <div
+                            class="bg-gradient-to-r from-primary to-primary/80 rounded-lg p-4 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold mr-4">¥5</div>
+                                <div>
+                                    <p>满50元可用</p>
+                                    <p class="text-sm mt-1 text-white/80">有效期至 2023-11-30</p>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-3 right-3 text-sm bg-white/20 px-2 py-1 rounded">全品类</div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-r from-blue-500 to-blue-400 rounded-lg p-4 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold mr-4">¥20</div>
+                                <div>
+                                    <p>满200元可用</p>
+                                    <p class="text-sm mt-1 text-white/80">有效期至 2023-11-20</p>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-3 right-3 text-sm bg-white/20 px-2 py-1 rounded">电子产品</div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-r from-green-500 to-green-400 rounded-lg p-4 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold mr-4">¥10</div>
+                                <div>
+                                    <p>满100元可用</p>
+                                    <p class="text-sm mt-1 text-white/80">有效期至 2023-11-15</p>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-3 right-3 text-sm bg-white/20 px-2 py-1 rounded">生活用品</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">已过期</h4>
+                    <div class="space-y-4">
+                        <div class="bg-gray-200 rounded-lg p-4 text-gray-500 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-white/30 rounded-full -mr-10 -mt-10"></div>
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold mr-4">¥15</div>
+                                <div>
+                                    <p>满150元可用</p>
+                                    <p class="text-sm mt-1">已过期 2023-10-30</p>
+                                </div>
+                            </div>
+                            <div class="absolute top-3 right-3 text-sm bg-gray-400 text-white px-2 py-1 rounded">已过期
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t">
+                <button
+                    class="w-full bg-primary/10 text-primary py-2 rounded-md font-medium hover:bg-primary/20 transition-colors">
+                    去领取更多优惠券
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 京东农场模态框 -->
+    <div id="farmModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-bold">京东农场</h3>
+                <div class="flex items-center">
+                    <div class="mr-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm flex items-center">
+                        <i class="fa fa-tint mr-1"></i>
+                        <span id="waterCount">5</span> 水滴
+                    </div>
+                    <div class="mr-4 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm flex items-center">
+                        <i class="fa fa-seedling mr-1"></i>
+                        <span id="seedCount">3</span> 种子
+                    </div>
+                    <button class="closeModal text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <button id="signInBtn"
+                        class="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition-colors">
+                        <i class="fa fa-calendar-check-o mr-1"></i> 每日签到领水滴
+                    </button>
+                    <button id="exchangeCouponBtn"
+                        class="bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors">
+                        <i class="fa fa-ticket mr-1"></i> 50种子兑换5元券
+                    </button>
+                    <button id="lotteryBtn"
+                        class="bg-purple-600 text-white px-4 py-2 rounded-md font-medium hover:bg-purple-700 transition-colors"
+                        disabled>
+                        <i class="fa fa-gift mr-1"></i> 10种子抽奖
+                    </button>
+                </div>
+
+                <!-- 农场田地 -->
+                <div class="grid grid-cols-3 gap-4" id="farmFields">
+                    <!-- 9块田地将通过JS动态生成 -->
+                </div>
+
+                <div class="mt-8 bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2">农场规则</h4>
+                    <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                        <li>每日签到可领取2-5个水滴</li>
+                        <li>每个种子需要1个水滴进行种植</li>
+                        <li>种植后等待一段时间成熟可收获</li>
+                        <li>收获时有25%-50%概率获得1-3个种子</li>
+                        <li>集齐50个种子可兑换5元优惠券</li>
+                        <li>每10个种子可参与一次转盘抽奖</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抽奖转盘模态框 -->
+    <div id="lotteryModal" class="fixed inset-0 bg-black/70 z-60 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 relative">
+            <button class="closeModal absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10">
+                <i class="fa fa-times"></i>
+            </button>
+            <h3 class="text-xl font-bold text-center mb-6">幸运大转盘</h3>
+
+            <div class="relative w-64 h-64 mx-auto">
+                <!-- 转盘背景 -->
+                <div class="absolute inset-0 rounded-full border-8 border-gray-200 overflow-hidden">
+                    <!-- 奖品区域 -->
+                    <div class="prize-item" style="top: 0; left: 50%; transform: translateX(-50%) rotate(0deg);">
+                        <span>5元券</span>
+                    </div>
+                    <div class="prize-item" style="top: 25%; right: 10%; transform: rotate(45deg);">
+                        <span>10水滴</span>
+                    </div>
+                    <div class="prize-item" style="top: 60%; right: 10%; transform: rotate(90deg);">
+                        <span>10元券</span>
+                    </div>
+                    <div class="prize-item" style="bottom: 0; left: 50%; transform: translateX(-50%) rotate(135deg);">
+                        <span>20种子</span>
+                    </div>
+                    <div class="prize-item" style="top: 60%; left: 10%; transform: rotate(-90deg);">
+                        <span>满100-20</span>
+                    </div>
+                    <div class="prize-item" style="top: 25%; left: 10%; transform: rotate(-45deg);">
+                        <span>5种子</span>
+                    </div>
+
+                    <!-- 转盘指针 -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg">
+                            <div class="w-4 h-4 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- 转盘旋转部分 -->
+                    <div id="lotteryWheel" class="absolute inset-0 rounded-full">
+                        <div class="absolute inset-0 rounded-full" style="background: conic-gradient(
+              #e1251b 0% 60deg,
+              #4ade80 60% 120deg,
+              #3b82f6 120% 180deg,
+              #f59e0b 180% 240deg,
+              #8b5cf6 240% 300deg,
+              #ec4899 300% 360deg
+            );"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="startLotteryBtn"
+                class="w-full mt-8 bg-primary text-white py-3 rounded-md font-medium hover:bg-primary/90 transition-colors">
+                开始抽奖
+            </button>
+        </div>
+    </div>
+
+    <!-- 心愿单模态框 -->
+    <div id="wishlistModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-bold">我的心愿单</h3>
+                <button class="closeModal text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div id="wishlistItems" class="overflow-y-auto p-6 flex-1">
+                <!-- 心愿单商品将通过JS动态生成 -->
+                <div class="text-center py-10 text-gray-500">
+                    <i class="fa fa-heart-o text-5xl mb-3"></i>
+                    <p>你的心愿单还是空的</p>
+                    <p class="mt-2">快去添加心仪的商品吧</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 购物车模态框 -->
+    <div id="cartModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-bold">我的购物车</h3>
+                <button class="closeModal text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div id="cartItems" class="overflow-y-auto p-6 flex-1">
+                <!-- 购物车商品将通过JS动态生成 -->
+                <div class="text-center py-10 text-gray-500">
+                    <i class="fa fa-shopping-cart text-5xl mb-3"></i>
+                    <p>你的购物车还是空的</p>
+                    <p class="mt-2">快去添加商品吧</p>
+                </div>
+            </div>
+            <div class="p-6 border-t">
+                <div class="flex justify-between mb-4">
+                    <span>合计:</span>
+                    <span id="cartTotal" class="text-xl font-bold text-primary">¥0.00</span>
+                </div>
+                <button id="checkoutBtn"
+                    class="w-full bg-primary text-white py-3 rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    去结算
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客服模态框 -->
+    <div id="serviceModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-bold">在线客服</h3>
+                <button class="closeModal text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 bg-gray-50" id="chatMessages">
+                <div class="flex items-start mb-4">
+                    <div
+                        class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 mr-3">
+                        <img src="https://picsum.photos/100/100?random=50" alt="用户头像"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg rounded-tl-none px-4 py-2 shadow-sm max-w-[80%]">
+                        <p>你好，我想咨询一下双11的活动规则</p>
+                    </div>
+                </div>
+                <div class="flex items-start mb-4 justify-end">
+                    <div class="bg-primary text-white rounded-lg rounded-tr-none px-4 py-2 shadow-sm max-w-[80%]">
+                        <p>您好！京东双11活动期间，全场商品低至5折，跨店满减每满200减30，还可叠加优惠券使用。活动时间为10月31日至11月11日，欢迎选购！</p>
+                    </div>
+                    <div
+                        class="bg-gray-300 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 ml-3">
+                        <img src="https://picsum.photos/100/100?random=51" alt="客服头像"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t">
+                <div class="flex">
+                    <input type="text" id="chatInput" placeholder="输入消息..."
+                        class="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                    <button id="sendMessageBtn"
+                        class="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-primary/90 transition-colors">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 红包雨区域 -->
+    <div id="redPacketRainArea" class="fixed inset-0 pointer-events-none z-50 hidden"></div>
+
+    <!-- 特价商品弹窗 -->
+    <div id="specialOfferModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="relative">
+                <img src="https://picsum.photos/600/300?random=30" alt="特价商品" class="w-full h-48 object-cover">
+                <div
+                    class="absolute top-3 right-3 bg-red-500 text-white text-sm px-3 py-1 rounded-full flex items-center">
+                    <i class="fa fa-clock-o mr-1"></i>
+                    <span id="specialOfferTimer">15:00</span>
+                </div>
+                <button
+                    class="closeModal absolute top-3 left-3 bg-black/30 text-white w-8 h-8 rounded-full flex items-center justify-center">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <h3 class="text-xl font-bold" id="specialOfferName">超值特价商品</h3>
+                <div class="mt-2 flex items-baseline">
+                    <span class="text-primary text-2xl font-bold" id="specialOfferPrice">¥99</span>
+                    <span class="text-gray-400 text-sm line-through ml-2" id="specialOfferOriginalPrice">¥199</span>
+                    <span class="ml-2 bg-red-100 text-red-600 text-xs px-2 py-1 rounded"
+                        id="specialOfferDiscount">5折</span>
+                </div>
+                <p class="mt-3 text-gray-600 text-sm" id="specialOfferDesc">这是一款超值特价商品，限时抢购，数量有限，先到先得！</p>
+                <button id="buySpecialOfferBtn"
+                    class="w-full mt-4 bg-primary text-white py-3 rounded-md font-medium hover:bg-primary/90 transition-colors">
+                    立即抢购
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化数据
+        const appData = {
+            // 农场数据
+            farm: {
+                water: 5,
+                seeds: 3,
+                fields: Array(9).fill().map(() => ({
+                    planted: false,
+                    mature: false,
+                    timestamp: null
+                })),
+                lastSignIn: null
+            },
+            // 商品数据
+            products: [
+                { id: 1, name: 'iPhone 14 Pro', price: 7999, originalPrice: 8999, image: 'https://picsum.photos/300/300?random=10', category: '电子产品' },
+                { id: 2, name: '华为MateBook X Pro', price: 8999, originalPrice: 9999, image: 'https://picsum.photos/300/300?random=11', category: '电子产品' },
+                { id: 3, name: '小米13 旗舰手机', price: 4299, originalPrice: 4599, image: 'https://picsum.photos/300/300?random=12', category: '电子产品' },
+                { id: 4, name: 'Nike Air Max运动鞋', price: 899, originalPrice: 1099, image: 'https://picsum.photos/300/300?random=13', category: '服饰鞋包' },
+                { id: 5, name: '三星Galaxy Tab S9', price: 5499, originalPrice: 5999, image: 'https://picsum.photos/300/300?random=14', category: '电子产品' },
+                { id: 6, name: '美的智能空调', price: 2799, originalPrice: 3299, image: 'https://picsum.photos/300/300?random=15', category: '家用电器' },
+                { id: 7, name: '苏泊尔电饭煲', price: 399, originalPrice: 499, image: 'https://picsum.photos/300/300?random=16', category: '家用电器' },
+                { id: 8, name: '乐高积木城市系列', price: 499, originalPrice: 599, image: 'https://picsum.photos/300/300?random=17', category: '玩具' },
+                { id: 9, name: '飞利浦电动牙刷', price: 349, originalPrice: 499, image: 'https://picsum.photos/300/300?random=18', category: '个人护理' },
+                { id: 10, name: '大疆Mini 3 Pro无人机', price: 4788, originalPrice: 4988, image: 'https://picsum.photos/300/300?random=19', category: '电子产品' }
+            ],
+            // 特价商品数据
+            specialOffer: {
+                id: 11,
+                name: '戴森吹风机',
+                price: 1499,
+                originalPrice: 2999,
+                image: 'https://picsum.photos/600/300?random=30',
+                discount: '5折',
+                description: '戴森Supersonic吹风机，快速干发，保护发质，多档调节',
+                remainingTime: 15 * 60 // 15分钟，单位秒
+            },
+            // 购物车数据
+            cart: [],
+            // 心愿单数据
+            wishlist: [],
+            // 红包雨计时器
+            redPacketRain: {
+                nextRainTime: 5 * 60, // 5分钟，单位秒
+                isActive: false
+            }
+        };
+
+        // 从本地存储加载数据
+        function loadData() {
+            const savedData = localStorage.getItem('jdDouble11Data');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                Object.assign(appData, parsedData);
+                updateUI();
+            }
+        }
+
+        // 保存数据到本地存储
+        function saveData() {
+            localStorage.setItem('jdDouble11Data', JSON.stringify(appData));
+        }
+
+        // 更新UI显示
+        function updateUI() {
+            // 更新农场数据显示
+            document.getElementById('waterCount').textContent = appData.farm.water;
+            document.getElementById('seedCount').textContent = appData.farm.seeds;
+
+            // 更新抽奖按钮状态
+            document.getElementById('lotteryBtn').disabled = appData.farm.seeds < 10;
+
+            // 更新购物车计数
+            document.getElementById('cartCount').textContent = appData.cart.length;
+
+            // 更新特价商品信息
+            document.getElementById('specialOfferName').textContent = appData.specialOffer.name;
+            document.getElementById('specialOfferPrice').textContent = `¥${appData.specialOffer.price}`;
+            document.getElementById('specialOfferOriginalPrice').textContent = `¥${appData.specialOffer.originalPrice}`;
+            document.getElementById('specialOfferDiscount').textContent = appData.specialOffer.discount;
+            document.getElementById('specialOfferDesc').textContent = appData.specialOffer.description;
+
+            // 更新购物车和心愿单显示
+            renderCart();
+            renderWishlist();
+            renderFarmFields();
+            updateSpecialOfferTimer();
+            updateRedPacketRainTimer();
+        }
+
+        // 渲染商品列表
+        function renderProducts() {
+            const productGrid = document.querySelector('main .grid');
+            productGrid.innerHTML = '';
+
+            appData.products.forEach(product => {
+                const isInCart = appData.cart.some(item => item.id === product.id);
+                const isInWishlist = appData.wishlist.some(item => item.id === product.id);
+
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow';
+                productCard.innerHTML = `
+          <div class="relative">
+            <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+            <div class="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">
+              ${Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="text-sm font-medium line-clamp-2 h-12">${product.name}</h3>
+            <div class="mt-2 flex items-baseline">
+              <span class="text-primary font-bold">¥${product.price}</span>
+              <span class="text-gray-400 text-xs line-through ml-2">¥${product.originalPrice}</span>
+            </div>
+            <div class="mt-3 flex justify-between">
+              <button class="add-to-cart-btn ${isInCart ? 'bg-gray-200 text-gray-500' : 'bg-primary text-white'} text-xs px-3 py-1 rounded hover:opacity-90 transition-opacity" 
+                      data-id="${product.id}" ${isInCart ? 'disabled' : ''}>
+                ${isInCart ? '已在购物车' : '加入购物车'}
+              </button>
+              <button class="add-to-wishlist-btn ${isInWishlist ? 'text-red-500' : 'text-gray-400'}" 
+                      data-id="${product.id}">
+                <i class="fa ${isInWishlist ? 'fa-heart' : 'fa-heart-o'}"></i>
+              </button>
+            </div>
+          </div>
+        `;
+                productGrid.appendChild(productCard);
+            });
+
+            // 添加购物车按钮事件
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+
+            // 添加心愿单按钮事件
+            document.querySelectorAll('.add-to-wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    toggleWishlist(productId);
+                });
+            });
+        }
+
+        // 渲染购物车
+        function renderCart() {
+            const cartContainer = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            if (appData.cart.length === 0) {
+                cartContainer.innerHTML = `
+          <div class="text-center py-10 text-gray-500">
+            <i class="fa fa-shopping-cart text-5xl mb-3"></i>
+            <p>你的购物车还是空的</p>
+            <p class="mt-2">快去添加商品吧</p>
+          </div>
+        `;
+                cartTotal.textContent = '¥0.00';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let total = 0;
+            cartContainer.innerHTML = '';
+
+            appData.cart.forEach(item => {
+                const product = appData.products.find(p => p.id === item.id) ||
+                    (item.id === appData.specialOffer.id ? appData.specialOffer : null);
+                if (!product) return;
+
+                total += product.price * item.quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.className = 'flex border-b pb-4 mb-4 last:border-0 last:pb-0';
+                cartItem.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="w-20 h-20 object-cover rounded mr-3">
+          <div class="flex-1">
+            <h4 class="text-sm font-medium line-clamp-2">${product.name}</h4>
+            <p class="text-primary font-bold mt-1">¥${product.price}</p>
+            <div class="flex items-center mt-2">
+              <button class="decrease-qty w-6 h-6 border rounded-full flex items-center justify-center text-sm" data-id="${product.id}">-</button>
+              <span class="mx-3">${item.quantity}</span>
+              <button class="increase-qty w-6 h-6 border rounded-full flex items-center justify-center text-sm" data-id="${product.id}">+</button>
+              <button class="remove-from-cart ml-auto text-gray-400 hover:text-primary" data-id="${product.id}">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+                cartContainer.appendChild(cartItem);
+            });
+
+            cartTotal.textContent = `¥${total.toFixed(2)}`;
+            checkoutBtn.disabled = false;
+
+            // 添加购物车项目事件
+            document.querySelectorAll('.decrease-qty').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    changeQuantity(productId, -1);
+                });
+            });
+
+            document.querySelectorAll('.increase-qty').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    changeQuantity(productId, 1);
+                });
+            });
+
+            document.querySelectorAll('.remove-from-cart').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    removeFromCart(productId);
+                });
+            });
+        }
+
+        // 渲染心愿单
+        function renderWishlist() {
+            const wishlistContainer = document.getElementById('wishlistItems');
+
+            if (appData.wishlist.length === 0) {
+                wishlistContainer.innerHTML = `
+          <div class="text-center py-10 text-gray-500">
+            <i class="fa fa-heart-o text-5xl mb-3"></i>
+            <p>你的心愿单还是空的</p>
+            <p class="mt-2">快去添加心仪的商品吧</p>
+          </div>
+        `;
+                return;
+            }
+
+            wishlistContainer.innerHTML = '';
+
+            appData.wishlist.forEach(item => {
+                const product = appData.products.find(p => p.id === item.id);
+
+                const wishlistItem = document.createElement('div');
+                wishlistItem.className = 'flex border-b pb-4 mb-4 last:border-0 last:pb-0';
+                wishlistItem.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="w-20 h-20 object-cover rounded mr-3">
+          <div class="flex-1">
+            <h4 class="text-sm font-medium line-clamp-2">${product.name}</h4>
+            <p class="text-primary font-bold mt-1">¥${product.price}</p>
+            <p class="text-gray-400 text-xs line-through">¥${product.originalPrice}</p>
+            <div class="flex mt-2">
+              <button class="add-to-cart-from-wishlist bg-primary text-white text-xs px-3 py-1 rounded hover:opacity-90 transition-opacity" 
+                      data-id="${product.id}">
+                加入购物车
+              </button>
+              <button class="remove-from-wishlist ml-2 text-gray-400 hover:text-primary" data-id="${product.id}">
+                <i class="fa fa-trash"></i> 移除
+              </button>
+            </div>
+          </div>
+        `;
+                wishlistContainer.appendChild(wishlistItem);
+            });
+
+            // 添加心愿单项目事件
+            document.querySelectorAll('.add-to-cart-from-wishlist').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+
+            document.querySelectorAll('.remove-from-wishlist').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    removeFromWishlist(productId);
+                });
+            });
+        }
+
+        // 渲染农场田地
+        function renderFarmFields() {
+            const fieldsContainer = document.getElementById('farmFields');
+            fieldsContainer.innerHTML = '';
+
+            appData.farm.fields.forEach((field, index) => {
+                const fieldElement = document.createElement('div');
+                fieldElement.className = 'bg-green-100 rounded-lg p-3 aspect-square flex flex-col items-center justify-center relative overflow-hidden';
+
+                let content = '';
+                let actionBtn = '';
+
+                if (field.planted) {
+                    // 检查是否成熟 (种植时间超过30秒)
+                    const now = new Date().getTime();
+                    const isMature = field.timestamp && (now - field.timestamp > 30000);
+
+                    if (isMature) {
+                        // 已成熟，可以收获
+                        content = '<i class="fa fa-seedling text-4xl text-green-600 animate-float"></i>';
+                        actionBtn = `<button class="harvest-btn mt-2 bg-green-600 text-white text-xs px-2 py-1 rounded" data-index="${index}">收获</button>`;
+                        field.mature = true;
+                    } else {
+                        // 种植中，未成熟
+                        const remainingTime = Math.ceil((30000 - (now - field.timestamp)) / 1000);
+                        content = '<i class="fa fa-spinner fa-spin text-2xl text-green-500"></i>';
+                        actionBtn = `<p class="text-xs text-gray-600 mt-2">成熟还需 ${remainingTime}s</p>`;
+                    }
+                } else {
+                    // 未种植
+                    content = '<i class="fa fa-pagelines text-2xl text-green-500"></i>';
+                    actionBtn = `<button class="plant-btn mt-2 ${appData.farm.water > 0 && appData.farm.seeds > 0 ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-500'} text-xs px-2 py-1 rounded" 
+                      data-index="${index}" ${appData.farm.water > 0 && appData.farm.seeds > 0 ? '' : 'disabled'}>
+                      种植
+                    </button>`;
+                }
+
+                fieldElement.innerHTML = `
+          <div class="absolute inset-0 bg-[url('https://picsum.photos/100/100?random=${index}')] opacity-20 bg-center bg-cover"></div>
+          ${content}
+          ${actionBtn}
+        `;
+
+                fieldsContainer.appendChild(fieldElement);
+            });
+
+            // 添加农场事件
+            document.querySelectorAll('.plant-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    plantSeed(index);
+                });
+            });
+
+            document.querySelectorAll('.harvest-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    harvestSeed(index);
+                });
+            });
+        }
+
+        // 购物车相关函数
+        function addToCart(productId) {
+            const existingItem = appData.cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                appData.cart.push({ id: productId, quantity: 1 });
+            }
+
+            saveData();
+            updateUI();
+            renderProducts();
+
+            // 显示添加成功提示
+            showToast('已添加到购物车');
+        }
+
+        function changeQuantity(productId, change) {
+            const item = appData.cart.find(item => item.id === productId);
+
+            if (item) {
+                item.quantity += change;
+
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveData();
+                    updateUI();
+                }
+            }
+        }
+
+        function removeFromCart(productId) {
+            appData.cart = appData.cart.filter(item => item.id !== productId);
+            saveData();
+            updateUI();
+            renderProducts();
+        }
+
+        // 心愿单相关函数
+        function toggleWishlist(productId) {
+            const existingItem = appData.wishlist.find(item => item.id === productId);
+
+            if (existingItem) {
+                removeFromWishlist(productId);
+                showToast('已从心愿单移除');
+            } else {
+                appData.wishlist.push({ id: productId });
+                saveData();
+                updateUI();
+                renderProducts();
+                showToast('已添加到心愿单');
+            }
+        }
+
+        function removeFromWishlist(productId) {
+            appData.wishlist = appData.wishlist.filter(item => item.id !== productId);
+            saveData();
+            updateUI();
+            renderProducts();
+        }
+
+        // 农场相关函数
+        function plantSeed(index) {
+            if (appData.farm.water > 0 && appData.farm.seeds > 0) {
+                appData.farm.fields[index] = {
+                    planted: true,
+                    mature: false,
+                    timestamp: new Date().getTime()
+                };
+
+                appData.farm.water -= 1;
+                appData.farm.seeds -= 1;
+
+                saveData();
+                renderFarmFields();
+                updateUI();
+
+                showToast('种植成功！等待成熟...');
+            }
+        }
+
+        function harvestSeed(index) {
+            // 25%-50%的概率获得1-3个种子
+            const successRate = Math.random();
+            let newSeeds = 0;
+
+            if (successRate >= 0.5 && successRate < 0.75) {
+                newSeeds = 1;
+            } else if (successRate >= 0.75 && successRate < 0.9) {
+                newSeeds = 2;
+            } else if (successRate >= 0.9) {
+                newSeeds = 3;
+            }
+
+            // 重置田地
+            appData.farm.fields[index] = {
+                planted: false,
+                mature: false,
+                timestamp: null
+            };
+
+            // 添加收获的种子
+            appData.farm.seeds += newSeeds;
+
+            saveData();
+            renderFarmFields();
+            updateUI();
+
+            if (newSeeds > 0) {
+                showToast(`收获成功！获得 ${newSeeds} 个种子`);
+            } else {
+                showToast('收获失败，再接再厉！');
+            }
+        }
+
+        function signIn() {
+            const today = new Date().toDateString();
+
+            if (appData.farm.lastSignIn === today) {
+                showToast('今天已经签过到了哦！');
+                return;
+            }
+
+            // 随机获得2-5个水滴
+            const waterGained = Math.floor(Math.random() * 4) + 2;
+            appData.farm.water += waterGained;
+            appData.farm.lastSignIn = today;
+
+            saveData();
+            updateUI();
+
+            showToast(`签到成功！获得 ${waterGained} 个水滴`);
+        }
+
+        function exchangeCoupon() {
+            if (appData.farm.seeds >= 50) {
+                appData.farm.seeds -= 50;
+                saveData();
+                updateUI();
+
+                showToast('兑换成功！5元优惠券已放入您的账户');
+                // 显示优惠券模态框
+                document.getElementById('couponModal').classList.remove('hidden');
+            } else {
+                showToast('种子数量不足，需要50个种子才能兑换');
+            }
+        }
+
+        // 抽奖相关函数
+        function startLottery() {
+            if (appData.farm.seeds < 10) {
+                showToast('种子数量不足，需要10个种子才能抽奖');
+                return;
+            }
+
+            // 扣除10个种子
+            appData.farm.seeds -= 10;
+            saveData();
+            updateUI();
+
+            // 旋转转盘
+            const lotteryWheel = document.getElementById('lotteryWheel');
+            lotteryWheel.classList.add('rotate-animation');
+
+            // 禁用抽奖按钮
+            document.getElementById('startLotteryBtn').disabled = true;
+
+            // 3秒后显示抽奖结果
+            setTimeout(() => {
+                // 随机生成一个奖项 (0-5)
+                const prizeIndex = Math.floor(Math.random() * 6);
+                let prizeName = '';
+
+                switch (prizeIndex) {
+                    case 0:
+                        prizeName = '5元优惠券';
+                        // 添加5元优惠券逻辑
+                        break;
+                    case 1:
+                        prizeName = '10个水滴';
+                        appData.farm.water += 10;
+                        break;
+                    case 2:
+                        prizeName = '10元优惠券';
+                        // 添加10元优惠券逻辑
+                        break;
+                    case 3:
+                        prizeName = '20个种子';
+                        appData.farm.seeds += 20;
+                        break;
+                    case 4:
+                        prizeName = '满100减20优惠券';
+                        // 添加满100减20优惠券逻辑
+                        break;
+                    case 5:
+                        prizeName = '5个种子';
+                        appData.farm.seeds += 5;
+                        break;
+                }
+
+                saveData();
+                updateUI();
+
+                showToast(`恭喜您获得${prizeName}！`);
+
+                // 重置转盘
+                setTimeout(() => {
+                    lotteryWheel.classList.remove('rotate-animation');
+                    document.getElementById('startLotteryBtn').disabled = false;
+                    document.getElementById('lotteryModal').classList.add('hidden');
+                }, 1000);
+            }, 3000);
+        }
+
+        // 红包雨相关函数
+        function startRedPacketRain() {
+            appData.redPacketRain.isActive = true;
+            const rainArea = document.getElementById('redPacketRainArea');
+            rainArea.classList.remove('hidden');
+            rainArea.innerHTML = '';
+
+            // 创建30个红包
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    if (!appData.redPacketRain.isActive) return;
+
+                    const redPacket = document.createElement('div');
+                    redPacket.className = 'red-packet';
+
+                    // 随机红包类型
+                    const packetType = Math.floor(Math.random() * 3);
+                    let icon = '';
+                    let prize = '';
+
+                    switch (packetType) {
+                        case 0:
+                            icon = '<i class="fa fa-ticket text-2xl text-yellow-300"></i>';
+                            prize = '5元优惠券';
+                            break;
+                        case 1:
+                            icon = '<i class="fa fa-ticket text-2xl text-green-300"></i>';
+                            prize = '10元优惠券';
+                            break;
+                        case 2:
+                            icon = '<i class="fa fa-ticket text-2xl text-blue-300"></i>';
+                            prize = '满100减20优惠券';
+                            break;
+                    }
+
+                    redPacket.innerHTML = icon;
+                    redPacket.dataset.prize = prize;
+
+                    // 随机位置和动画时间
+                    const left = Math.random() * 100;
+                    const duration = 3 + Math.random() * 4;
+                    const size = 30 + Math.random() * 20;
+
+                    redPacket.style.left = `${left}%`;
+                    redPacket.style.fontSize = `${size}px`;
+                    redPacket.style.animationDuration = `${duration}s`;
+
+                    // 点击红包
+                    redPacket.addEventListener('click', function () {
+                        this.remove();
+                        showToast(`恭喜获得${this.dataset.prize}！`);
+                        // 这里可以添加优惠券到用户账户的逻辑
+                    });
+
+                    rainArea.appendChild(redPacket);
+
+                    // 自动消失
+                    setTimeout(() => {
+                        if (redPacket.parentNode) {
+                            redPacket.remove();
+                        }
+                    }, duration * 1000);
+                }, i * 300);
+            }
+
+            // 5秒后结束红包雨
+            setTimeout(() => {
+                endRedPacketRain();
+            }, 8000);
+        }
+
+        function endRedPacketRain() {
+            appData.redPacketRain.isActive = false;
+            appData.redPacketRain.nextRainTime = 5 * 60; // 重置为5分钟
+            const rainArea = document.getElementById('redPacketRainArea');
+            rainArea.classList.add('hidden');
+            rainArea.innerHTML = '';
+            showToast('红包雨结束啦！下一场将在5分钟后开始');
+        }
+
+        function updateRedPacketRainTimer() {
+            if (appData.redPacketRain.isActive) {
+                document.getElementById('redPacketRainTimer').textContent = '红包雨进行中！';
+                return;
+            }
+
+            const minutes = Math.floor(appData.redPacketRain.nextRainTime / 60);
+            const seconds = appData.redPacketRain.nextRainTime % 60;
+            document.getElementById('redPacketRainTimer').textContent = `下一场红包雨：${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            // 倒计时结束，开始红包雨
+            if (appData.redPacketRain.nextRainTime <= 0) {
+                startRedPacketRain();
+            }
+        }
+
+        // 特价商品相关函数
+        function updateSpecialOfferTimer() {
+            if (appData.specialOffer.remainingTime <= 0) {
+                document.getElementById('specialOfferTimer').textContent = '已结束';
+                document.getElementById('buySpecialOfferBtn').disabled = true;
+                document.getElementById('buySpecialOfferBtn').textContent = '已结束';
+                document.getElementById('buySpecialOfferBtn').classList.add('bg-gray-400');
+                document.getElementById('buySpecialOfferBtn').classList.remove('bg-primary', 'hover:bg-primary/90');
+                return;
+            }
+
+            const minutes = Math.floor(appData.specialOffer.remainingTime / 60);
+            const seconds = appData.specialOffer.remainingTime % 60;
+            document.getElementById('specialOfferTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function buySpecialOffer() {
+            addToCart(appData.specialOffer.id);
+            document.getElementById('specialOfferModal').classList.add('hidden');
+        }
+
+        function showSpecialOffer() {
+            // 随机15-30分钟的倒计时
+            appData.specialOffer.remainingTime = 15 * 60 + Math.floor(Math.random() * 15 * 60);
+            document.getElementById('specialOfferModal').classList.remove('hidden');
+        }
+
+        // 显示提示消息
+        function showToast(message) {
+            // 检查是否已有toast
+            let toast = document.querySelector('.toast');
+
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'toast fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-md z-50 transition-all opacity-0';
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        // 倒计时功能
+        function startCountdown() {
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 1); // 明天此时结束
+            endDate.setHours(0, 0, 0, 0); // 明天0点0分0秒
+
+            function updateCountdown() {
+                const now = new Date();
+                const diff = endDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+                // 更新红包雨倒计时
+                if (!appData.redPacketRain.isActive) {
+                    appData.redPacketRain.nextRainTime--;
+                    updateRedPacketRainTimer();
+                }
+
+                // 更新特价商品倒计时
+                if (appData.specialOffer.remainingTime > 0) {
+                    appData.specialOffer.remainingTime--;
+                    updateSpecialOfferTimer();
+                }
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // 客服图标拖拽功能
+        function makeDraggable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+            element.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // 获取鼠标初始位置
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // 当鼠标移动时调用elementDrag函数
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // 计算新的位置
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // 设置元素新的位置
+                const newTop = (element.offsetTop - pos2);
+                const newLeft = (element.offsetLeft - pos1);
+
+                // 限制在窗口内
+                const maxTop = window.innerHeight - element.offsetHeight;
+                const maxLeft = window.innerWidth - element.offsetWidth;
+
+                element.style.top = (newTop > 0 && newTop < maxTop ? newTop : newTop < 0 ? 0 : maxTop) + "px";
+                element.style.left = (newLeft > 0 && newLeft < maxLeft ? newLeft : newLeft < 0 ? 0 : maxLeft) + "px";
+            }
+
+            function closeDragElement() {
+                // 停止移动
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        // 聊天功能
+        function initChat() {
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendMessageBtn');
+            const chatMessages = document.getElementById('chatMessages');
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                // 添加用户消息
+                const userMessage = document.createElement('div');
+                userMessage.className = 'flex items-start mb-4';
+                userMessage.innerHTML = `
+          <div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 mr-3">
+            <img src="https://picsum.photos/100/100?random=50" alt="用户头像" class="w-full h-full rounded-full object-cover">
+          </div>
+          <div class="bg-white rounded-lg rounded-tl-none px-4 py-2 shadow-sm max-w-[80%]">
+            <p>${message}</p>
+          </div>
+        `;
+                chatMessages.appendChild(userMessage);
+
+                // 清空输入框
+                chatInput.value = '';
+                // 滚动到底部
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // 模拟客服回复
+                setTimeout(() => {
+                    const replies = [
+                        "您好，请问有什么可以帮助您的吗？",
+                        "关于双11活动，全场商品低至5折，还有满减活动哦。",
+                        "优惠券可以在商品详情页领取，也可以在我的优惠券页面查看。",
+                        "订单一般会在24小时内发货，具体以实际物流为准。",
+                        "如果您对商品不满意，支持7天无理由退换货。",
+                        "感谢您的咨询，祝您购物愉快！"
+                    ];
+                    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'flex items-start mb-4 justify-end';
+                    botMessage.innerHTML = `
+            <div class="bg-primary text-white rounded-lg rounded-tr-none px-4 py-2 shadow-sm max-w-[80%]">
+              <p>${randomReply}</p>
+            </div>
+            <div class="bg-gray-300 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 ml-3">
+              <img src="https://picsum.photos/100/100?random=51" alt="客服头像" class="w-full h-full rounded-full object-cover">
+            </div>
+          `;
+                    chatMessages.appendChild(botMessage);
+                    // 滚动到底部
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        }
+
+        // 初始化事件监听
+        function initEventListeners() {
+            // 模态框相关
+            const modalTriggers = [
+                { btn: 'loginBtn', modal: 'loginModal' },
+                { btn: 'farmBtn', modal: 'farmModal' },
+                { btn: 'wishlistBtn', modal: 'wishlistModal' },
+                { btn: 'cartBtn', modal: 'cartModal' },
+                { btn: 'couponBtn', modal: 'couponModal' },
+                { btn: 'customerService', modal: 'serviceModal' },
+                { btn: 'lotteryBtn', modal: 'lotteryModal' }
+            ];
+
+            modalTriggers.forEach(({ btn, modal }) => {
+                document.getElementById(btn).addEventListener('click', function () {
+                    document.getElementById(modal).classList.remove('hidden');
+                });
+            });
+
+            // 关闭模态框
+            document.querySelectorAll('.closeModal').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    this.closest('[id$="Modal"]').classList.add('hidden');
+
+                    // 停止转盘动画
+                    if (this.closest('#lotteryModal')) {
+                        const lotteryWheel = document.getElementById('lotteryWheel');
+                        lotteryWheel.classList.remove('rotate-animation');
+                        document.getElementById('startLotteryBtn').disabled = false;
+                    }
+                });
+            });
+
+            // 点击模态框外部关闭
+            document.querySelectorAll('[id$="Modal"]').forEach(modal => {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        this.classList.add('hidden');
+
+                        // 停止转盘动画
+                        if (this.id === 'lotteryModal') {
+                            const lotteryWheel = document.getElementById('lotteryWheel');
+                            lotteryWheel.classList.remove('rotate-animation');
+                            document.getElementById('startLotteryBtn').disabled = false;
+                        }
+                    }
+                });
+            });
+
+            // 农场相关事件
+            document.getElementById('signInBtn').addEventListener('click', signIn);
+            document.getElementById('exchangeCouponBtn').addEventListener('click', exchangeCoupon);
+            document.getElementById('startLotteryBtn').addEventListener('click', startLottery);
+
+            // 特价商品相关事件
+            document.getElementById('buySpecialOfferBtn').addEventListener('click', buySpecialOffer);
+
+            // 登录表单提交
+            document.getElementById('loginForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                document.getElementById('loginModal').classList.add('hidden');
+                showToast('登录成功！');
+            });
+
+            // 结算按钮
+            document.getElementById('checkoutBtn').addEventListener('click', function () {
+                showToast('结算功能开发中，敬请期待！');
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            loadData();
+            renderProducts();
+            startCountdown();
+            initEventListeners();
+            makeDraggable(document.getElementById('customerService'));
+            initChat();
+
+            // 定时更新农场状态
+            setInterval(renderFarmFields, 1000);
+
+            // 随机时间显示特价商品弹窗 (30秒到2分钟之间)
+            setTimeout(() => {
+                showSpecialOffer();
+            }, 30000 + Math.random() * 90000);
+        });
+    </script>
+</body>
+
+</html>
