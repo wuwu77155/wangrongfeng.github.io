@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成果展示 - 莲花县乡村振兴</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 头部样式（1:1匹配截图） */
+        .header {
+            background-color: #70e9aa;
+            /* 截图同款深绿色 */
+            padding: 0 2%;
+            /* 贴合截图左右边距 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* 左侧Logo 右侧导航 */
+            height: 80px;
+            /* 匹配截图头部高度 */
+        }
+
+        /* 左侧Logo区域 */
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 60px;
+            /* 截图圆形Logo尺寸 */
+            height: 60px;
+            border-radius: 50%;
+            /* 圆形Logo */
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            /* 白色文字 */
+        }
+
+        /* 右侧导航栏 */
+        .nav-list {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            height: 100%;
+        }
+
+        .nav-item {
+            margin-left: 25px;
+            /* 导航项间距匹配截图 */
+        }
+
+        .nav-link {
+            color: #fff;
+            /* 白色文字 */
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        /* 成果展示核心样式 */
+        .achievements-container {
+            width: 96%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .section-title {
+            color: #70e9aa;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #70e9aa;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: #70e9aa;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 响应式适配（小屏兼容） */
+        @media (max-width: 768px) {
+            .header {
+                height: auto;
+                flex-wrap: wrap;
+                padding: 10px 2%;
+            }
+
+            .nav-list {
+                width: 100%;
+                margin-top: 10px;
+                justify-content: flex-start;
+            }
+
+            .nav-item {
+                margin-left: 15px;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头部（完全匹配截图） -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="莲花县乡村振兴Logo">
+            <span class="logo-text">莲花县乡村振兴平台</span>
+        </a>
+        <!-- 右侧导航栏（截图同款） -->
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">首页</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">关于我们</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">成果展示</a></li>
+            <li class="nav-item"><a href="suggest.html" class="nav-link">建议提案</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">登录</a></li>
+        </ul>
+    </header>
+
+    <!-- 成果展示内容（保留所有原有内容） -->
+    <div class="achievements-container">
+        <h2 class="section-title">乡村振兴成果展示</h2>
+        <div class="achievements-grid">
+            <div class="achievement-card">
+                <h3 class="card-title">生态农业示范基地</h3>
+                <p class="card-desc">建成500亩生态农业示范基地，采用有机种植技术，年产值达300万元。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">乡村道路硬化工程</h3>
+                <p class="card-desc">完成15公里乡村道路硬化，解决了12个自然村的出行难题。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">乡村电商平台</h3>
+                <p class="card-desc">建立乡村电商服务中心，帮助农民销售特色产品，年销售额突破500万元。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">文化活动中心</h3>
+                <p class="card-desc">建成综合性活动中心，丰富村民精神文化生活。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">饮水安全工程</h3>
+                <p class="card-desc">实施饮水安全提升工程，解决了3000余名村民的安全饮水问题。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">乡村旅游示范点</h3>
+                <p class="card-desc">打造乡村旅游示范点，年接待游客5万人次，带动村民增收。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">良坊 “四项联动” 肉牛养殖基地</h3>
+                <p class="card-desc">良坊党委以胜龙牛业为龙头，建 “一龙头三中心五基地”，推 “四项联动” 养牛。现已有 26 个合作社、5 个养殖基地，牛舍 6 万平（可养 8000头），500
+                    余户参与，每户年增收超 3000 元，覆盖 20村，村集体增收百万，基本实现养殖全覆盖。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">良坊 “绿色水果” 致富基地</h3>
+                <p class="card-desc">良坊贯彻 “绿水青山就是金山银山” 理念，以 “党支部 + 合作社 + 基地 + 脱贫户” 模式，发展秋雪蜜桃、沃柑等特色水果。白沙、冲头村等分别种植100 至
+                    600 余亩果树，均已挂果销售，可为村集体经济年增收 5-8 万元，念活生态“致富经”。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">良坊 “特色种植” 致富基地</h3>
+                <p class="card-desc">良坊流转闲置土地，整修设施、引进合作社，以 “合作社 + 基地 + 农户” 模式发展红薯、苗木种植。下坊等村红薯种植 300 亩（用于加工），梅洲村苗木80
+                    余亩（品种丰富），实现脱贫户、村集体、公司三方共赢，今年预计为村集体增收 4万元。</p>
+            </div>
+            <div class="achievement-card">
+                <h3 class="card-title">良坊 “中药材” 致富基地</h3>
+                <p class="card-desc">良坊结合省里产业布局，借帮扶单位之力，以 “帮扶单位 + 党支部 + 特色产业 + 农户” 模式，推 “四统一” 发展中药材。白渡村建 15亩亳菊基地（7.5
+                    万株）、3000 平灵芝大棚（5 万袋），现灵芝陆续出芝，7-8月采摘，预计产值 16 万元。</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

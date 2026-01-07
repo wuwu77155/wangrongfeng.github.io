@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 莲花县乡村振兴平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 头部样式（完全匹配截图） */
+        .header {
+            background-color: #70e9aa;
+            /* 截图同款深绿色背景 */
+            padding: 10px 2%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* 左侧Logo 右侧导航 */
+            height: 80px;
+            /* 适配Logo高度 */
+        }
+
+        /* 左侧Logo+平台名称 */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 60px;
+            /* 截图中Logo尺寸 */
+            height: 60px;
+            border-radius: 50%;
+            /* 圆形Logo */
+            object-fit: cover;
+        }
+
+        .logo-text {
+            color: #fff;
+            /* 白色文字 */
+            font-size: 18px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* 右侧导航栏 */
+        .nav-list {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            height: 100%;
+        }
+
+        .nav-item {
+            margin-left: 25px;
+            /* 导航项间距 */
+        }
+
+        .nav-link {
+            color: #fff;
+            /* 白色文字 */
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #f0e68c;
+            /* hover浅黄高亮 */
+        }
+
+        /* 关于我们核心内容样式 */
+        .about-container {
+            width: 96%;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-title {
+            color: #70e9aa;
+            font-size: 28px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #70e9aa;
+        }
+
+        .about-desc {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .work-title {
+            color: #70e9aa;
+            font-size: 20px;
+            margin: 20px 0 15px;
+        }
+
+        .work-list {
+            color: #333;
+            font-size: 16px;
+            line-height: 2;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .work-list li {
+            margin-bottom: 10px;
+            list-style-type: disc;
+        }
+
+        .about-footer {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .header {
+                height: auto;
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+            .nav-list {
+                width: 100%;
+                margin-top: 10px;
+                justify-content: flex-start;
+            }
+
+            .nav-item {
+                margin-left: 15px;
+                margin-top: 5px;
+            }
+
+            .about-title {
+                font-size: 24px;
+            }
+
+            .work-title {
+                font-size: 18px;
+            }
+
+            .about-desc,
+            .work-list,
+            .about-footer {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头部（完全匹配截图样式） -->
+    <header class="header">
+        <!-- 左侧Logo + 平台名称 -->
+        <div class="logo-wrapper">
+            <img src="images/logo.png" alt="莲花县乡村振兴Logo" class="logo-img">
+            <span class="logo-text">莲花县乡村振兴平台</span>
+        </div>
+        <!-- 右侧导航栏 -->
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">首页</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">关于我们</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">成果展示</a></li>
+            <li class="nav-item"><a href="suggest.html" class="nav-link">建议提案</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">登录</a></li>
+        </ul>
+    </header>
+
+    <!-- 关于我们核心内容 -->
+    <div class="about-container">
+        <h1 class="about-title">关于我们</h1>
+        <p class="about-desc">
+            乡村振兴平台深耕江西本土乡村发展实践，以莲花县、萍乡市等区域为核心试点，致力于推动乡村发展，促进城乡融合，助力实现农业强、农村美、农民富的目标。
+        </p>
+
+        <h2 class="work-title">我们的主要工作包括：</h2>
+        <ul class="work-list">
+            <li>
+                <strong>整合乡村资源，促进乡村特色产业发展</strong>：聚焦各地自然禀赋与产业基础，助力培育特色产业集群。如推动莲花县良坊镇打造“致富牛”肉牛全产业链、“致富树”特色水果种植、“致富苗”红薯/苗木种植、“致富花”中药材种植等多元产业，形成“一业兴、百业旺”的产业发展格局。
+            </li>
+            <li>
+                <strong>搭建城乡交流平台，推动人才、技术、资金下乡</strong>：链接企业、帮扶单位、专家团队等资源，为乡村引入龙头企业（如江西胜龙牛业）、农业专业合作社，同时推动技术培训、政策补贴落地，解决乡村产业发展的人才、资金、技术瓶颈。
+            </li>
+            <li>
+                <strong>记录和展示乡村振兴成果，分享成功经验</strong>：系统梳理各地乡村振兴典型案例，如良坊镇肉牛产业带动500余户农户年增收超3000元、村级集体经济增收百万，萍乡市以傩文化为核心的文旅融合模式等，为全省乡村振兴提供可复制、可推广的实践经验。
+            </li>
+            <li>
+                <strong>收集和反馈民众建议，参与乡村治理</strong>：搭建民众建言献策通道，围绕产业发展、基础设施、文化建设等维度收集建议，推动建议落地转化，提升乡村治理的民众参与度与科学性。
+            </li>
+            <li>
+                <strong>开展乡村培训，提升农民技能和素质</strong>：针对特色产业开展专项技能培训，如肉牛养殖技术、果树种植管理、中药材培育等，同时普及电商、文旅运营等新业态知识，增强农民增收致富能力。
+            </li>
+        </ul>
+
+        <p class="about-footer">
+            通过各方努力，我们已在莲花县良坊镇、萍乡市非遗文旅村落等多个乡村开展试点项目，形成了“产业兴村、文旅活村、治理稳村”的综合发展模式，取得了显著成效。未来，我们将继续深化乡村振兴工作，立足江西赣鄱文化底蕴与农业特色，推动更多乡村实现产业振兴、文化振兴、人才振兴，为实现乡村全面振兴贡献力量。
+        </p>
+    </div>
+</body>
+
+</html>

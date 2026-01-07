@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建议提案 - 莲花县乡村振兴</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 头部样式（1:1匹配截图） */
+        .header {
+            background-color: #70e9aa;
+            /* 截图同款深绿色 */
+            padding: 0 2%;
+            /* 贴合截图左右边距 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* 左侧Logo 右侧导航 */
+            height: 80px;
+            /* 匹配截图头部高度 */
+        }
+
+        /* 左侧Logo区域 */
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 60px;
+            /* 截图圆形Logo尺寸 */
+            height: 60px;
+            border-radius: 50%;
+            /* 圆形Logo */
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            /* 白色文字 */
+        }
+
+        /* 右侧导航栏 */
+        .nav-list {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            height: 100%;
+        }
+
+        .nav-item {
+            margin-left: 25px;
+            /* 导航项间距匹配截图 */
+        }
+
+        .nav-link {
+            color: #fff;
+            /* 白色文字 */
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        /* 建议提案表单样式（保留原有功能） */
+        .suggest-container {
+            width: 96%;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            color: #70e9aa;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #70e9aa;
+        }
+
+        .form-item {
+            margin-bottom: 20px;
+        }
+
+        .form-item label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-item input,
+        .form-item select {
+            width: 100%;
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-item textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .form-item input:focus,
+        .form-item select:focus,
+        .form-item textarea:focus {
+            outline: none;
+            border-color: #70e9aa;
+        }
+
+        .submit-btn {
+            padding: 10px 30px;
+            background-color: #70e9aa;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #70e9aa;
+        }
+
+        /* 响应式适配（小屏兼容） */
+        @media (max-width: 768px) {
+            .header {
+                height: auto;
+                flex-wrap: wrap;
+                padding: 10px 2%;
+            }
+
+            .nav-list {
+                width: 100%;
+                margin-top: 10px;
+                justify-content: flex-start;
+            }
+
+            .nav-item {
+                margin-left: 15px;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头部（完全匹配截图） -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="莲花县乡村振兴Logo">
+            <span class="logo-text">莲花县乡村振兴平台</span>
+        </a>
+        <!-- 右侧导航栏（截图同款） -->
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">首页</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">关于我们</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">成果展示</a></li>
+            <li class="nav-item"><a href="suggest.html" class="nav-link">建议提案</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">登录</a></li>
+        </ul>
+    </header>
+
+    <!-- 建议提案表单（保留所有原有功能） -->
+    <div class="suggest-container">
+        <h2 class="section-title">乡村振兴建议提案</h2>
+        <form id="suggestForm">
+            <div class="form-item">
+                <label for="name">姓名</label>
+                <input type="text" id="name" placeholder="请输入您的姓名" required>
+            </div>
+            <div class="form-item">
+                <label for="contact">联系方式</label>
+                <input type="text" id="contact" placeholder="请输入您的电话或邮箱" required>
+            </div>
+            <div class="form-item">
+                <label for="village">涉及乡村</label>
+                <select id="village" required>
+                    <option value="">请选择乡村</option>
+                    <option value="良坊镇">良坊镇</option>
+                    <option value="琴亭镇">琴亭镇</option>
+                    <option value="坊楼镇">坊楼镇</option>
+                    <option value="升坊镇">升坊镇</option>
+                </select>
+            </div>
+            <div class="form-item">
+                <label for="type">建议类型</label>
+                <select id="type" required>
+                    <option value="">请选择建议类型</option>
+                    <option value="产业发展">产业发展</option>
+                    <option value="基础设施">基础设施</option>
+                    <option value="文化建设">文化建设</option>
+                    <option value="生态保护">生态保护</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div class="form-item">
+                <label for="content">建议内容</label>
+                <textarea id="content" placeholder="请详细描述您的建议..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">提交建议</button>
+        </form>
+    </div>
+
+    <script>
+        // 表单提交逻辑（保留原有功能）
+        document.getElementById('suggestForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // 阻止默认提交
+            // 获取表单数据（实际项目需对接后端接口）
+            const formData = {
+                name: document.getElementById('name').value,
+                contact: document.getElementById('contact').value,
+                village: document.getElementById('village').value,
+                type: document.getElementById('type').value,
+                content: document.getElementById('content').value
+            };
+            // 模拟提交成功
+            alert("建议提交成功！感谢您的宝贵意见，我们会尽快处理。");
+            this.reset(); // 重置表单
+        });
+    </script>
+</body>
+
+</html>

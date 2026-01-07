@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>莲花县乡村振兴 - 登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        body {
+            background-color: #f5f8f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-logo img {
+            width: 80px;
+            height: auto;
+        }
+
+        .login-title {
+            text-align: center;
+            color: #70e9aa;
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .form-item {
+            margin-bottom: 20px;
+        }
+
+        .form-item label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-item input {
+            width: 100%;
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-item input:focus {
+            outline: none;
+            border-color: #70e9aa;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 42px;
+            background-color: #70e9aa;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #70e9aa;
+        }
+
+        .to-index {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .to-index a {
+            color: #70e9aa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-logo">
+            <img src="images/logo.png" alt="莲花县乡村振兴Logo">
+        </div>
+        <h2 class="login-title">莲花县乡村振兴平台</h2>
+        <div class="form-item">
+            <label for="username">账号</label>
+            <input type="text" id="username" placeholder="请输入账号">
+        </div>
+        <div class="form-item">
+            <label for="password">密码</label>
+            <input type="password" id="password" placeholder="请输入密码">
+        </div>
+        <button class="login-btn" onclick="login()">登录</button>
+        <div class="to-index">
+            <a href="index.html">无需登录，直接访问首页</a>
+        </div>
+    </div>
+
+    <script>
+        // 简单登录验证（实际项目需对接后端）
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                alert("登录成功！即将跳转到首页");
+                window.location.href = "index.html";
+            } else {
+                alert("请输入账号和密码！");
+            }
+        }
+    </script>
+</body>
+
+</html>
