@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>莲花县乡村振兴 - 首页</title>
+    <!-- 引用公共样式 -->
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* 页面独有样式 */
+        .carousel {
+            width: 96%;
+            max-width: 1200px;
+            height: 400px;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .prev-btn {
+            left: 10px;
+        }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        /* 轮播指示器（新增） */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .indicator.active {
+            background-color: #70e9aa;
+            transform: scale(1.2);
+        }
+
+        /* 乡村地点/成果展示布局 */
+        .location-section,
+        .achievements-section,
+        .suggest-entrance {
+            width: 96%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .location-list,
+        .achievements-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .location-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .location-info,
+        .achievement-card {
+            padding: 20px;
+        }
+
+        .location-name,
+        .achievement-title {
+            color: #70e9aa;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .location-desc,
+        .achievement-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .suggest-entrance {
+            text-align: center;
+        }
+
+        .suggest-entrance p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        /* 移动端轮播适配 */
+        @media (max-width: 768px) {
+            .carousel {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头部（引用公共样式） -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="莲花县乡村振兴Logo" data-src="images/logo.png">
+            <span class="logo-text">莲花县乡村振兴平台</span>
+        </a>
+
+        <!-- 新增汉堡菜单 -->
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">首页</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">关于我们</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">成果展示</a></li>
+            <li class="nav-item"><a href="suggest.html" class="nav-link">建议提案</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">登录</a></li>
+        </ul>
+    </header>
+
+    <!-- 轮播图（优化：新增指示器、hover暂停） -->
+    <div class="carousel" id="carousel">
+        <div class="carousel-track">
+            <div class="carousel-item">
+                <img src="" alt="莲花县乡村风光1 - 生态农业基地" data-src="images/rural1.jpg">
+            </div>
+            <div class="carousel-item">
+                <img src="" alt="莲花县乡村风光2 - 乡村道路硬化工程" data-src="images/rural2.jpg">
+            </div>
+            <div class="carousel-item">
+                <img src="" alt="莲花县乡村风光3 - 乡村旅游示范点" data-src="images/rural3.jpg">
+            </div>
+        </div>
+        <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)">&lt;</button>
+        <button class="carousel-btn next-btn" onclick="moveCarousel(1)">&gt;</button>
+
+        <!-- 新增轮播指示器 -->
+        <div class="carousel-indicators">
+            <span class="indicator active" onclick="jumpToSlide(0)"></span>
+            <span class="indicator" onclick="jumpToSlide(1)"></span>
+            <span class="indicator" onclick="jumpToSlide(2)"></span>
+        </div>
+    </div>
+
+    <!-- 乡村振兴地点展示 -->
+    <section class="location-section">
+        <h2 class="section-title">莲花县乡村振兴重点地点</h2>
+        <div class="location-list">
+            <div class="location-card card">
+                <img src="" alt="良坊镇 - 特色农业发展示范点" data-src="images/location1.jpg">
+                <div class="location-info">
+                    <h3 class="location-name">良坊镇</h3>
+                    <p class="location-desc">莲花县良坊镇聚焦特色农业发展，打造莲花血鸭产业集群，推动农产品品牌化，助力村民增收致富，是乡村产业振兴的核心示范点。</p>
+                </div>
+            </div>
+            <div class="location-card card">
+                <img src="" alt="琴亭镇 - 生态宜居乡村示范点" data-src="images/location2.jpg">
+                <div class="location-info">
+                    <h3 class="location-name">琴亭镇</h3>
+                    <p class="location-desc">琴亭镇以生态宜居为目标，推进乡村基础设施升级，完成道路硬化、饮水安全等工程，同时发展乡村旅游，实现生态与经济双提升。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成果展示（精简版） -->
+    <section class="achievements-section">
+        <h2 class="section-title">乡村振兴成果</h2>
+        <div class="achievements-list">
+            <div class="achievement-card card">
+                <h3 class="achievement-title">良坊 “绿色水果” 致富基地</h3>
+                <p class="achievement-desc">良坊贯彻 “绿水青山就是金山银山” 理念，以 “党支部 + 合作社 + 基地 + 脱贫户”
+                    模式，发展秋雪蜜桃、沃柑等特色水果。白沙、冲头村等分别种植100 至 600 余亩果树，均已挂果销售，可为村集体经济年增收 5-8 万元。</p>
+            </div>
+            <div class="achievement-card card">
+                <h3 class="achievement-title">良坊 “特色种植” 致富基地</h3>
+                <p class="achievement-desc">良坊流转闲置土地，整修设施、引进合作社，以 “合作社 + 基地 + 农户” 模式发展红薯、苗木种植。下坊等村红薯种植 300
+                    亩（用于加工），梅洲村苗木80 余亩，预计为村集体增收 4万元。</p>
+            </div>
+            <div class="achievement-card card">
+                <h3 class="achievement-title">良坊 “中药材” 致富基地</h3>
+                <p class="achievement-desc">良坊结合省里产业布局，借帮扶单位之力，以 “帮扶单位 + 党支部 + 特色产业 + 农户” 模式发展中药材。白渡村建 15亩亳菊基地、3000
+                    平灵芝大棚，预计产值 16 万元。</p>
+            </div>
+            <div class="achievement-card card">
+                <h3 class="achievement-title">良坊 “四项联动” 肉牛养殖基地</h3>
+                <p class="achievement-desc">良坊党委以胜龙牛业为龙头，建 “一龙头三中心五基地”，推 “四项联动” 养牛。现已有 26 个合作社、5 个养殖基地，500 余户参与，每户年增收超
+                    3000 元。</p>
+            </div>
+            <div class="achievement-card card">
+                <h3 class="achievement-title">生态农业示范基地</h3>
+                <p class="achievement-desc">建成500亩生态农业示范基地，采用有机种植技术，年产值达300万元。</p>
+            </div>
+            <div class="achievement-card card">
+                <h3 class="achievement-title">乡村道路硬化工程</h3>
+                <p class="achievement-desc">完成15公里乡村道路硬化，解决了12个自然村的出行难题。</p>
+            </div>
+            <div class="achievement-card card">
+                <h3 class="achievement-title">乡村电商平台</h3>
+                <p class="achievement-desc">建立乡村电商服务中心，帮助农民销售特色产品，年销售额突破500万元。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 建议提案入口 -->
+    <section class="suggest-entrance">
+        <h2 class="section-title">建言献策</h2>
+        <p style="margin-bottom: 20px; color: #666;">您的建议是乡村振兴的重要力量，欢迎提出宝贵意见！</p>
+        <a href="suggest.html" class="btn suggest-btn">提交建议提案</a>
+    </section>
+
+    <!-- 引用公共脚本 + 页面独有脚本 -->
+    <script src="common.js"></script>
+    <script>
+        // 轮播图优化逻辑
+        let currentSlide = 0;
+        let carouselTimer = setInterval(() => moveCarousel(1), 3000);
+        const carousel = document.getElementById('carousel');
+        const indicators = document.querySelectorAll('.indicator');
+
+        // 轮播切换
+        function moveCarousel(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 2;
+            if (currentSlide > 2) currentSlide = 0;
+            updateCarousel();
+        }
+
+        // 跳转到指定轮播页
+        function jumpToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // 更新轮播状态（轨道 + 指示器）
+        function updateCarousel() {
+            document.querySelector('.carousel-track').style.transform = `translateX(-${currentSlide * 33.33}%)`;
+            // 更新指示器
+            indicators.forEach((indicator, idx) => {
+                indicator.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        // hover暂停轮播（新增）
+        carousel.addEventListener('mouseenter', () => {
+            clearInterval(carouselTimer);
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            carouselTimer = setInterval(() => moveCarousel(1), 3000);
+        });
+    </script>
+</body>
+
+</html>

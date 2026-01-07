@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乡村振兴成果展示 - 莲花县乡村振兴平台</title>
+    <!-- 复用公共样式库 -->
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* 页面独有样式 - 仅编写差异化内容，公共样式全部复用common.css */
+        .container {
+            width: 96%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding-bottom: 50px;
+        }
+
+        /* 成果统计看板 */
+        .achievement-stat {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #70e9aa;
+        }
+
+        .stat-num {
+            font-size: 28px;
+            color: #70e9aa;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .stat-name {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 成果筛选栏 */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 20px;
+            background-color: #f9fbf9;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .filter-type {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 6px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background-color: #70e9aa;
+            color: #fff;
+            border-color: #70e9aa;
+        }
+
+        /* 成果列表 - 自适应网格布局 */
+        .achievement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .achievement-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .achievement-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .achievement-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: #e8f5e9;
+            color: #70e9aa;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .achievement-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .achievement-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        .achievement-date {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .filter-bar {
+                justify-content: center;
+            }
+
+            .stat-num {
+                font-size: 24px;
+            }
+
+            .achievement-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ✅ 复用公共头部（含汉堡菜单，联动common.js） -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="" alt="莲花县乡村振兴Logo" data-src="images/logo.png">
+            <span class="logo-text">莲花县乡村振兴平台</span>
+        </a>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">首页</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">关于我们</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">成果展示</a></li>
+            <li class="nav-item"><a href="suggest.html" class="nav-link">建议提案</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">登录</a></li>
+        </ul>
+    </header>
+
+    <!-- 成果展示主容器 -->
+    <div class="container">
+        <h2 class="section-title">莲花县乡村振兴成果总览</h2>
+
+        <!-- 成果数据统计看板 -->
+        <div class="achievement-stat">
+            <div class="stat-card">
+                <div class="stat-name">特色产业基地</div>
+                <div class="stat-num">26 +</div>
+                <div class="stat-desc">个</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-name">集体经济增收</div>
+                <div class="stat-num">5000 万+</div>
+                <div class="stat-desc">元</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-name">道路硬化工程</div>
+                <div class="stat-num">120 km</div>
+                <div class="stat-desc">总长</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-name">村民年均增收</div>
+                <div class="stat-num">3.2 万+</div>
+                <div class="stat-desc">元</div>
+            </div>
+        </div>
+
+        <!-- 成果分类筛选 -->
+        <div class="filter-bar">
+            <div class="filter-type">
+                <div class="filter-btn active" data-type="all">全部成果</div>
+                <div class="filter-btn" data-type="industry">产业发展</div>
+                <div class="filter-btn" data-type="infrastructure">基础设施</div>
+                <div class="filter-btn" data-type="ecology">生态宜居</div>
+                <div class="filter-btn" data-type="culture">文化建设</div>
+            </div>
+            <a href="index.html" class="btn" style="padding:8px 20px;font-size:14px;">返回首页</a>
+        </div>
+
+        <!-- 成果列表（复用公共card样式，带hover动效） -->
+        <div class="achievement-list">
+            <!-- 产业发展类 -->
+            <div class="achievement-card card" data-type="industry">
+                <img src="" alt="良坊绿色水果致富基地" class="achievement-img" data-src="images/ach1.jpg">
+                <div class="achievement-info">
+                    <span class="achievement-tag">产业发展</span>
+                    <h3 class="achievement-title">良坊 “绿色水果” 致富基地</h3>
+                    <p class="achievement-desc">
+                        以“党支部+合作社+基地+脱贫户”模式，发展秋雪蜜桃、沃柑等特色水果，白沙、冲头村种植100-600余亩果树，均已挂果销售，村集体经济年增收5-8万元。</p>
+                    <div class="achievement-date">2025-08-12</div>
+                </div>
+            </div>
+            <div class="achievement-card card" data-type="industry">
+                <img src="" alt="良坊中药材种植基地" class="achievement-img" data-src="images/ach2.jpg">
+                <div class="achievement-info">
+                    <span class="achievement-tag">产业发展</span>
+                    <h3 class="achievement-title">良坊 “中药材” 致富基地</h3>
+                    <p class="achievement-desc">结合省级产业布局，打造15亩亳菊基地、3000平灵芝大棚，采用“帮扶单位+党支部+特色产业+农户”模式，预计年产值达16万元。</p>
+                    <div class="achievement-date">2025-07-25</div>
+                </div>
+            </div>
+            <div class="achievement-card card" data-type="industry">
+                <img src="" alt="四项联动肉牛养殖基地" class="achievement-img" data-src="images/ach3.jpg">
+                <div class="achievement-info">
+                    <span class="achievement-tag">产业发展</span>
+                    <h3 class="achievement-title">“四项联动” 肉牛养殖基地</h3>
+                    <p class="achievement-desc">以胜龙牛业为龙头，建成“一龙头三中心五基地”，26个合作社、5个养殖基地参与，500余户农户年均增收超3000元。</p>
+                    <div class="achievement-date">2025-06-18</div>
+                </div>
+            </div>
+            <!-- 基础设施类 -->
+            <div class="achievement-card card" data-type="infrastructure">
+                <img src="" alt="乡村道路硬化工程" class="achievement-img" data-src="images/ach4.jpg">
+                <div class="achievement-info">
+                    <span class="achievement-tag">基础设施</span>
+                    <h3 class="achievement-title">全域乡村道路硬化工程</h3>
+                    <p class="achievement-desc">完成15个自然村道路硬化升级，总长超20公里，解决村民出行难、农产品运输难问题，打通乡村发展“最后一公里”。</p>
+                    <div class="achievement-date">2025-05-30</div>
+                </div>
+            </div>
+            <!-- 生态宜居类 -->
+            <div class="achievement-card card" data-type="ecology">
+                <img src="" alt="琴亭镇生态宜居改造" class="achievement-img" data-src="images/ach5.jpg">
+                <div class="achievement-info">
+                    <span class="achievement-tag">生态宜居</span>
+                    <h3 class="achievement-title">琴亭镇生态宜居乡村示范点</h3>
+                    <p class="achievement-desc">推进饮水安全、垃圾分类、污水治理工程，完成村容村貌改造，打造“水清、路净、村美”的生态宜居乡村样板。</p>
+                    <div class="achievement-date">2025-04-22</div>
+                </div>
+            </div>
+            <!-- 文化建设类 -->
+            <div class="achievement-card card" data-type="culture">
+                <img src="" alt="乡村文化礼堂建设" class="achievement-img" data-src="images/ach6.jpg">
+                <div class="achievement-info">
+                    <span class="achievement-tag">文化建设</span>
+                    <h3 class="achievement-title">乡村文化礼堂全覆盖</h3>
+                    <p class="achievement-desc">建成8个标准化乡村文化礼堂，配套农家书屋、文化广场，开展非遗传承、农技培训等活动，丰富村民精神文化生活。</p>
+                    <div class="achievement-date">2025-03-15</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ 复用公共脚本（懒加载、汉堡菜单、表单验证） -->
+    <script src="common.js"></script>
+    <script>
+        // 成果筛选交互（页面独有逻辑）
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const achievementCards = document.querySelectorAll('.achievement-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 切换筛选按钮激活状态
+                filterBtns.forEach(item => item.classList.remove('active'));
+                btn.classList.add('active');
+                const type = btn.dataset.type;
+
+                // 筛选成果卡片
+                achievementCards.forEach(card => {
+                    if (type === 'all' || card.dataset.type === type) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
